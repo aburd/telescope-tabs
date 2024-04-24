@@ -12,6 +12,16 @@ require("lazy").setup {
 }
 ```
 
+## Usage
+
+Use in vim with `:Telescope tabs`.
+
+Or setup a key binding:
+
+```vim
+nnoremap <C-j> :Telescope tabs<CR>
+```
+
 ## Config
 
 ```lua
