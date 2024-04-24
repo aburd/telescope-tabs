@@ -4,7 +4,9 @@ A [telescope](https://github.com/nvim-telescope/telescope.nvim) plugin for viewi
 
 ## Installation
 
-Install with any plugin manager. For example with lazy:
+You will need to have [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) installed.
+
+Then install the plugin with any plugin manager. For example with lazy:
 
 ```
 require("lazy").setup {
