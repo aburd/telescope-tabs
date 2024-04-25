@@ -14,6 +14,11 @@ require("lazy").setup {
 }
 ```
 
+Then register the extension somewhere:
+```lua
+require('telescope').load_extension('tabs')
+```
+
 ## Usage
 
 Use in vim with `:Telescope tabs`.
