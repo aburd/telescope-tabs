@@ -1,8 +1,7 @@
 ## Description
 
 A [telescope](https://github.com/nvim-telescope/telescope.nvim) plugin for viewing your tabs and jumping to them.
-
-![telescope-tabs](https://github.com/aburd/telescope-tabs/assets/6701630/567d3ce9-5616-4b20-af61-f9ef24057310)
+![telescope-tabs](https://github.com/aburd/telescope-tabs/assets/6701630/830e59cf-264c-483f-a71f-6df80161b1d7)
 
 ## Installation
 
