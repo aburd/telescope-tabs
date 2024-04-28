@@ -3,7 +3,7 @@
 (local actions (require :telescope.actions))
 (local actions-state (require :telescope.actions.state))
 (local conf (. (require :telescope.config) :values))
-(local {: map : first} (require :nfnl.core))
+(local {: map : first : keys : filter : println} (require :nfnl.core))
 
 (fn buf-info [buf]
   {:idx buf :name (vim.api.nvim_buf_get_name buf)})
@@ -27,8 +27,17 @@
           {:name first-buffer-name :tab tab}))
       tab-entries)))
 
+(fn s->plain
+  [s]
+  "prevent replacement magic"
+  (s:gsub "(%W)" "%%%1"))
+
+(fn cut-cwd [s]
+  (let [cwd (vim.fn.getcwd)]
+    (s:gsub (s->plain cwd) "")))
+
 (fn entry-maker [{: name : tab}]
-  {:display name :ordinal name :value tab})
+  {:display (cut-cwd name) :ordinal name :value tab})
 
 (fn handle-attach-mappings [prompt-bufnr _map]
   (actions.select_default:replace 

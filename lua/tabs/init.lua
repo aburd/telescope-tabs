@@ -1,4 +1,4 @@
--- [nfnl] Compiled from init.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] Compiled from fnl/tabs/init.fnl by https://github.com/Olical/nfnl, do not edit.
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local actions = require("telescope.actions")
@@ -7,6 +7,9 @@ local conf = (require("telescope.config")).values
 local _local_1_ = require("nfnl.core")
 local map = _local_1_["map"]
 local first = _local_1_["first"]
+local keys = _local_1_["keys"]
+local filter = _local_1_["filter"]
+local println = _local_1_["println"]
 local function buf_info(buf)
   return {idx = buf, name = vim.api.nvim_buf_get_name(buf)}
 end
@@ -28,11 +31,18 @@ local function tab_results()
   end
   return map(_4_, tab_entries)
 end
+local function s__3eplain(s)
+  return s:gsub("(%W)", "%%%1")
+end
+local function cut_cwd(s)
+  local cwd = vim.fn.getcwd()
+  return s:gsub(s__3eplain(cwd), "")
+end
 local function entry_maker(_5_)
   local _arg_6_ = _5_
   local name = _arg_6_["name"]
   local tab = _arg_6_["tab"]
-  return {display = name, ordinal = name, value = tab}
+  return {display = cut_cwd(name), ordinal = name, value = tab}
 end
 local function handle_attach_mappings(prompt_bufnr, _map)
   local function _7_()
