@@ -1,9 +1,10 @@
 (local pickers (require :telescope.pickers))
 (local finders (require :telescope.finders))
 (local actions (require :telescope.actions))
+(local previewers (require :telescope.previewers))
 (local actions-state (require :telescope.actions.state))
 (local conf (. (require :telescope.config) :values))
-(local {: map : first : keys : filter : println} (require :nfnl.core))
+(local {: map : first : println : merge} (require :nfnl.core))
 
 (fn buf-info [buf]
   {:idx buf :name (vim.api.nvim_buf_get_name buf)})
@@ -37,7 +38,7 @@
     (s:gsub (s->plain cwd) "")))
 
 (fn entry-maker [{: name : tab}]
-  {:display (cut-cwd name) :ordinal name :value tab})
+  {:display (cut-cwd name) :ordinal name :value name :tab tab})
 
 (fn handle-attach-mappings [prompt-bufnr _map]
   (actions.select_default:replace 
@@ -45,16 +46,18 @@
       (actions.close prompt-bufnr)
       (let [selection (actions-state.get_selected_entry)
             tab-number (when selection 
-                           (vim.api.nvim_tabpage_get_number selection.value))]
+                           (vim.api.nvim_tabpage_get_number selection.tab))]
         (when tab-number
           (vim.api.nvim_input (.. (tostring tab-number) "gt"))))))
   true)
+
 
 (fn tab-picker [opts]
   (let [opts (or opts {})]
     (pickers.new opts {:prompt_title "TABS"
                        :finder (finders.new_table {:results (tab-results)
                                                    :entry_maker entry-maker})
+                       :previewer (previewers.cat.new opts)     
                        :sorter (conf.generic_sorter opts)
                        :attach_mappings handle-attach-mappings})))
 

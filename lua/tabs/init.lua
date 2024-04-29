@@ -2,14 +2,14 @@
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local actions = require("telescope.actions")
+local previewers = require("telescope.previewers")
 local actions_state = require("telescope.actions.state")
 local conf = (require("telescope.config")).values
 local _local_1_ = require("nfnl.core")
 local map = _local_1_["map"]
 local first = _local_1_["first"]
-local keys = _local_1_["keys"]
-local filter = _local_1_["filter"]
 local println = _local_1_["println"]
+local merge = _local_1_["merge"]
 local function buf_info(buf)
   return {idx = buf, name = vim.api.nvim_buf_get_name(buf)}
 end
@@ -42,7 +42,7 @@ local function entry_maker(_5_)
   local _arg_6_ = _5_
   local name = _arg_6_["name"]
   local tab = _arg_6_["tab"]
-  return {display = cut_cwd(name), ordinal = name, value = tab}
+  return {display = cut_cwd(name), ordinal = name, value = name, tab = tab}
 end
 local function handle_attach_mappings(prompt_bufnr, _map)
   local function _7_()
@@ -50,7 +50,7 @@ local function handle_attach_mappings(prompt_bufnr, _map)
     local selection = actions_state.get_selected_entry()
     local tab_number
     if selection then
-      tab_number = vim.api.nvim_tabpage_get_number(selection.value)
+      tab_number = vim.api.nvim_tabpage_get_number(selection.tab)
     else
       tab_number = nil
     end
@@ -65,7 +65,7 @@ local function handle_attach_mappings(prompt_bufnr, _map)
 end
 local function tab_picker(opts)
   local opts0 = (opts or {})
-  return pickers.new(opts0, {prompt_title = "TABS", finder = finders.new_table({results = tab_results(), entry_maker = entry_maker}), sorter = conf.generic_sorter(opts0), attach_mappings = handle_attach_mappings})
+  return pickers.new(opts0, {prompt_title = "TABS", finder = finders.new_table({results = tab_results(), entry_maker = entry_maker}), previewer = previewers.cat.new(opts0), sorter = conf.generic_sorter(opts0), attach_mappings = handle_attach_mappings})
 end
 local function start_tab_picker(opts)
   local picker = tab_picker(opts)
